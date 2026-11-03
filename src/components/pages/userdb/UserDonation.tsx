@@ -11,18 +11,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
 import { UserDonationStyles as styles } from '../../../styles/UserDonationStyles';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-
-
-type MaterialDesignIconName =
-  React.ComponentProps<typeof MaterialDesignIcons>['name'];
+import { useDonation } from '../../../tanstack/hooks/useDonation';
 
 type FoodType = 'Bakery & Bread' | 'Prepared Food' | 'Produce';
 
 export default function UserDonation() {
-  
   const [foodType, setFoodType] =
     useState<FoodType>('Bakery & Bread');
 
@@ -45,12 +38,7 @@ export default function UserDonation() {
   const [showFoodTypes, setShowFoodTypes] =
     useState(false);
 
-  const handlePostDonation = () => {
-    Alert.alert(
-      'Donation Ready',
-      'Your donation form is ready to be connected to the backend.',
-    );
-  };
+  const donationMutation = useDonation();
 
   const handleClearForm = () => {
     setFoodType('Bakery & Bread');
@@ -59,6 +47,40 @@ export default function UserDonation() {
     setExpiry('Today by 8:30 PM');
     setLocation('The Green Hearth Bakery');
     setPhotoAdded(false);
+  };
+
+  const handlePostDonation = () => {
+    const parsedQuantity = Number(quantity);
+    if (
+      !itemName.trim() ||
+      !Number.isFinite(parsedQuantity) ||
+      parsedQuantity <= 0
+    ) {
+      Alert.alert(
+        'Check donation details',
+        'Enter an item name and a quantity greater than zero.',
+      );
+      return;
+    }
+
+    donationMutation.mutate(
+      {
+        foodType,
+        itemName: itemName.trim(),
+        quantity: parsedQuantity,
+        expiry,
+        location: location.trim(),
+      },
+      {
+        onSuccess: () => {
+          Alert.alert('Donation posted', 'Your donation was sent successfully.');
+          handleClearForm();
+        },
+        onError: error => {
+          Alert.alert('Could not post donation', error.message);
+        },
+      },
+    );
   };
 
   const handlePhotoPress = () => {
@@ -497,10 +519,11 @@ export default function UserDonation() {
           <TouchableOpacity
             style={styles.postDonationButton}
             activeOpacity={0.85}
+            disabled={donationMutation.isPending}
             onPress={handlePostDonation}
           >
             <Text style={styles.postDonationText}>
-              Post Donation
+              {donationMutation.isPending ? 'Posting...' : 'Post Donation'}
             </Text>
 
             <MaterialDesignIcons

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Text,
   TouchableOpacity,
   View,
@@ -8,12 +9,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
-import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import AntDesign from '@react-native-vector-icons/ant-design';
 import { useLogin } from '../../../tanstack/hooks/useLogin';
 import { LoginStyles } from '../../../styles/LoginStyles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAuth } from '../../../tanstack/auth/AuthContext';
+import { getAuthToken } from '../../../tanstack/services/authServices';
 
 // 1. Define your navigation stack parameters
 export type RootStackParamList = {
@@ -28,19 +30,43 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 export default function Login() {
-  // 3. Pass the type to useNavigation hook
   const navigation = useNavigation<LoginScreenNavigationProp>();
-  
+  const { setToken } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    console.log('Logging in:', email);
+    if (!email.trim() || !password) {
+      Alert.alert('Missing details', 'Enter your email and password.');
+      return;
+    }
+
+    login(
+      { email: email.trim(), password },
+      {
+        onSuccess: response => {
+          const token = getAuthToken(response);
+          if (!token) {
+            Alert.alert(
+              'Login failed',
+              'The login response did not include an authentication token.',
+            );
+            return;
+          }
+
+          setToken(token);
+          navigation.navigate('UserDashboard');
+        },
+        onError: error => {
+          Alert.alert('Login failed', error.message);
+        },
+      },
+    );
   };
 
-  const { mutate: login } = useLogin();
+  const { mutate: login, isPending } = useLogin();
 
   return (
     <SafeAreaView style={LoginStyles.container}>
@@ -154,12 +180,12 @@ export default function Login() {
           <TouchableOpacity
             style={LoginStyles.signInButton}
             activeOpacity={0.85}
-            onPress={() => {
-              login({ email, password });
-              navigation.navigate('UserDashboard');
-            }}
+            disabled={isPending}
+            onPress={handleLogin}
           >
-            <Text style={LoginStyles.signInText}>Sign In</Text>
+            <Text style={LoginStyles.signInText}>
+              {isPending ? 'Signing In...' : 'Sign In'}
+            </Text>
           </TouchableOpacity>
 
           {/* Divider */}

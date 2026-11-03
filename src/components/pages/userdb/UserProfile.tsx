@@ -9,10 +9,32 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
 import FontAwesome6 from "@react-native-vector-icons/fontawesome6";
+import {profileService} from "../../../tanstack/services/profileServices";
+import { useAuth } from "../../../tanstack/auth/AuthContext";
 
 import { UserProfileStyles } from "../../../styles/UserProfileStyles";
 
 export default function UserProfile() {
+const [profileData, setProfileData] = React.useState<{ name?: string } | null>(null);
+const { token } = useAuth();
+
+React.useEffect(() => {
+  if (!token) {
+    setProfileData(null);
+    return;
+  }
+
+  const fetchProfile = async () => {
+    try {
+      const data = await profileService.getProfile(token);
+      setProfileData(data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
+  fetchProfile();
+}, [token]);
   return (
     <SafeAreaView style={UserProfileStyles.container}>
       {/* Header */}
@@ -74,7 +96,7 @@ export default function UserProfile() {
           {/* User Information */}
           <View style={UserProfileStyles.userInfo}>
             <Text style={UserProfileStyles.userName}>
-              Elena Rodriguez
+              { profileData ? profileData.name : "Loading..." }
             </Text>
 
             <View style={UserProfileStyles.infoRow}>
