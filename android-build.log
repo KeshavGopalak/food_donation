@@ -1,0 +1,243 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+WARNING: We recommend using a newer Android Gradle plugin to use compile SDK version 37.0
+
+This Android Gradle plugin (8.12.0) was tested up to compile SDK version 36.0.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compile SDK version 37.0.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compile SDK version 37.0 is available.
+
+For more information refer to the compatibility table:
+https://d.android.com/r/tools/api-level-support
+
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=37.0
+to this project's gradle.properties.
+WARNING: We recommend using a newer Android Gradle plugin to use compile SDK version 37.0
+
+This Android Gradle plugin (8.12.0) was tested up to compile SDK version 36.0.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compile SDK version 37.0.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compile SDK version 37.0 is available.
+
+For more information refer to the compatibility table:
+https://d.android.com/r/tools/api-level-support
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=37.0
+to this project's gradle.properties.
+> Task :app:generateAutolinkingNewArchitectureFiles UP-TO-DATE
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:generateReactNativeEntryPoint UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:copyFonts UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:preBuild UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:copyFonts UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:preBuild UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:copyFonts UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:preBuild UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-safe-area-context:preDebugBuild UP-TO-DATE
+> Task :react-native-safe-area-context:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:preDebugBuild UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:preDebugBuild UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:writeDebugAarMetadata UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:preDebugBuild UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugResValues UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugResources UP-TO-DATE
+> Task :react-native-safe-area-context:packageDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:generateDebugResValues UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:generateDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:packageDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:generateDebugResValues UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:generateDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:packageDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:generateDebugResValues UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:generateDebugResources UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-safe-area-context:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-safe-area-context:processDebugManifest UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:processDebugManifest UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:processDebugManifest UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:extractDeepLinksDebug UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :react-native-safe-area-context:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-safe-area-context:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-safe-area-context:generateDebugRFile UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:generateDebugRFile UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:generateDebugRFile UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:compileDebugLibraryResources UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:parseDebugLocalResources UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:generateDebugRFile UP-TO-DATE
+> Task :react-native-safe-area-context:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-safe-area-context:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-safe-area-context:compileDebugKotlin UP-TO-DATE
+> Task :react-native-safe-area-context:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-safe-area-context:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-safe-area-context:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-vector-icons_ant-design:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:compileDebugKotlin UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-vector-icons_fontawesome6:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:compileDebugKotlin UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-vector-icons_material-design-icons:generateDebugBuildConfig UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:compileDebugKotlin UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:javaPreCompileDebug UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:compileDebugJavaWithJavac UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :react-native-safe-area-context:mergeDebugShaders UP-TO-DATE
+> Task :react-native-safe-area-context:compileDebugShaders NO-SOURCE
+> Task :react-native-safe-area-context:generateDebugAssets UP-TO-DATE
+> Task :react-native-safe-area-context:mergeDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:mergeDebugShaders UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:compileDebugShaders NO-SOURCE
+> Task :react-native-vector-icons_ant-design:generateDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:mergeDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:mergeDebugShaders UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:compileDebugShaders NO-SOURCE
+> Task :react-native-vector-icons_fontawesome6:generateDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:mergeDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:mergeDebugShaders UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:compileDebugShaders NO-SOURCE
+> Task :react-native-vector-icons_material-design-icons:generateDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :react-native-safe-area-context:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :app:processDebugManifestForPackage
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :react-native-safe-area-context:processDebugJavaRes UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:processDebugJavaRes UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:processDebugJavaRes UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:processDebugJavaRes UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :react-native-vector-icons_ant-design:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :react-native-vector-icons_fontawesome6:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :react-native-vector-icons_material-design-icons:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :react-native-safe-area-context:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:configureCMakeDebug[arm64-v8a]
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:mergeLibDexDebug
+> Task :app:compileDebugKotlin
+> Task :app:configureCMakeDebug[armeabi-v7a]
+> Task :app:compileDebugJavaWithJavac
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:processDebugJavaRes
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:buildCMakeDebug[armeabi-v7a]
+> Task :app:configureCMakeDebug[x86]
+> Task :app:buildCMakeDebug[x86]
+> Task :app:configureCMakeDebug[x86_64]
+> Task :app:buildCMakeDebug[x86_64]
+> Task :app:mergeDebugJniLibFolders
+> Task :react-native-safe-area-context:mergeDebugJniLibFolders
+> Task :react-native-safe-area-context:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-safe-area-context:copyDebugJniLibsProjectOnly
+> Task :react-native-vector-icons_ant-design:mergeDebugJniLibFolders
+> Task :react-native-vector-icons_ant-design:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-vector-icons_ant-design:copyDebugJniLibsProjectOnly
+> Task :react-native-vector-icons_fontawesome6:mergeDebugJniLibFolders
+> Task :react-native-vector-icons_fontawesome6:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-vector-icons_fontawesome6:copyDebugJniLibsProjectOnly
+> Task :react-native-vector-icons_material-design-icons:mergeDebugJniLibFolders
+> Task :react-native-vector-icons_material-design-icons:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-vector-icons_material-design-icons:copyDebugJniLibsProjectOnly
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugNativeLibs
+> Task :app:stripDebugDebugSymbols
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///C:/food_donation/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 16s
+153 actionable tasks: 35 executed, 118 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html
