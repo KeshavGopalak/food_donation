@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
-export const UserDonationStyles = StyleSheet.create({
+const baseStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F7FB',
+    backgroundColor: '#F7F5EF',
   },
 
   scrollContent: {
@@ -15,9 +15,9 @@ export const UserDonationStyles = StyleSheet.create({
 
   header: {
     height: 52,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFEFB',
     borderBottomWidth: 1,
-    borderBottomColor: '#E9EEEC',
+    borderBottomColor: '#E8E5DC',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
@@ -38,7 +38,7 @@ export const UserDonationStyles = StyleSheet.create({
   headerTitle: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#202C28',
+    color: '#1C2C25',
   },
 
   headerBadges: {
@@ -52,7 +52,7 @@ export const UserDonationStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    backgroundColor: '#FFE7D9',
+    backgroundColor: '#FCE9D6',
     borderRadius: 8,
     paddingHorizontal: 5,
     paddingVertical: 2,
@@ -60,7 +60,7 @@ export const UserDonationStyles = StyleSheet.create({
 
   headerBadgeText: {
     fontSize: 6.5,
-    color: '#C66A2B',
+    color: '#B65C20',
     fontWeight: '800',
   },
 
@@ -71,7 +71,7 @@ export const UserDonationStyles = StyleSheet.create({
   },
 
   wasteTargetText: {
-    color: '#00805A',
+    color: '#26734D',
     fontSize: 6.5,
     fontWeight: '700',
   },
@@ -80,7 +80,7 @@ export const UserDonationStyles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 13,
-    backgroundColor: '#007E57',
+    backgroundColor: '#26734D',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -96,13 +96,13 @@ export const UserDonationStyles = StyleSheet.create({
   pageTitle: {
     fontSize: 16,
     fontWeight: '900',
-    color: '#202B27',
+    color: '#1C2C25',
   },
 
   pageDescription: {
     fontSize: 8,
     lineHeight: 11,
-    color: '#6C7672',
+    color: '#69766E',
     marginTop: 2,
   },
 
@@ -112,7 +112,7 @@ export const UserDonationStyles = StyleSheet.create({
 
   infoBanner: {
     minHeight: 38,
-    backgroundColor: '#EAF1FC',
+    backgroundColor: '#E9EEE2',
     borderRadius: 7,
     marginTop: 7,
     paddingHorizontal: 8,
@@ -125,19 +125,19 @@ export const UserDonationStyles = StyleSheet.create({
   infoBannerText: {
     fontSize: 7.5,
     lineHeight: 10,
-    color: '#66716E',
+    color: '#526057',
   },
 
   /* ================= FORM ================= */
 
   formCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFEFB',
     borderRadius: 9,
     paddingHorizontal: 9,
     paddingTop: 9,
     paddingBottom: 8,
     borderWidth: 1,
-    borderColor: '#E7EBEA',
+    borderColor: '#E8E5DC',
   },
 
   formHeader: {
@@ -150,7 +150,7 @@ export const UserDonationStyles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 13,
-    backgroundColor: '#E1F5EC',
+    backgroundColor: '#E2EDDF',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 6,
@@ -159,13 +159,13 @@ export const UserDonationStyles = StyleSheet.create({
   formTitle: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#293531',
+    color: '#1C2C25',
     flex: 1,
   },
 
   requiredText: {
     fontSize: 6.5,
-    color: '#6F7975',
+    color: '#69766E',
   },
 
   field: {
@@ -181,13 +181,13 @@ export const UserDonationStyles = StyleSheet.create({
 
   label: {
     fontSize: 7.5,
-    color: '#3A4541',
+    color: '#35443A',
     fontWeight: '700',
     marginBottom: 3,
   },
 
   requiredStar: {
-    color: '#C45F27',
+    color: '#B65C20',
   },
 
   autoCategorized: {
@@ -197,7 +197,7 @@ export const UserDonationStyles = StyleSheet.create({
   },
 
   autoCategorizedText: {
-    color: '#00805A',
+    color: '#26734D',
     fontSize: 6.5,
     fontWeight: '700',
   },
@@ -207,7 +207,7 @@ export const UserDonationStyles = StyleSheet.create({
   foodTypeSelector: {
     height: 29,
     borderRadius: 7,
-    backgroundColor: '#EEF7F2',
+    backgroundColor: '#E9EEE2',
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -223,15 +223,15 @@ export const UserDonationStyles = StyleSheet.create({
   foodTypeText: {
     fontSize: 8,
     fontWeight: '700',
-    color: '#00805A',
+    color: '#26734D',
   },
 
   dropdown: {
     marginTop: 3,
     borderRadius: 7,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFEFB',
     borderWidth: 1,
-    borderColor: '#E1E6E4',
+    borderColor: '#E8E5DC',
     overflow: 'hidden',
   },
 
@@ -242,12 +242,12 @@ export const UserDonationStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F2F1',
+    borderBottomColor: '#F1EFE8',
   },
 
   dropdownText: {
     fontSize: 8,
-    color: '#36413D',
+    color: '#35443A',
   },
 
   /* Text inputs */
@@ -255,7 +255,7 @@ export const UserDonationStyles = StyleSheet.create({
   textInputContainer: {
     height: 29,
     borderRadius: 7,
-    backgroundColor: '#F0F3F8',
+    backgroundColor: '#F7F5EF',
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -266,13 +266,23 @@ export const UserDonationStyles = StyleSheet.create({
     height: 29,
     padding: 0,
     fontSize: 8,
-    color: '#3A4541',
+    color: '#35443A',
+  },
+
+  multilineInput: {
+    minHeight: 96,
+    borderRadius: 12,
+    backgroundColor: '#F7F5EF',
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    fontSize: 14,
+    color: '#35443A',
   },
 
   quantityInput: {
     height: 29,
     borderRadius: 7,
-    backgroundColor: '#F0F3F8',
+    backgroundColor: '#F7F5EF',
     paddingHorizontal: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -284,24 +294,24 @@ export const UserDonationStyles = StyleSheet.create({
     padding: 0,
     marginLeft: 5,
     fontSize: 8,
-    color: '#36413D',
+    color: '#35443A',
   },
 
   quantityUnit: {
     fontSize: 8,
-    color: '#68736F',
+    color: '#69766E',
     fontWeight: '700',
   },
 
   quantityHelper: {
     fontSize: 6.5,
-    color: '#77817E',
+    color: '#899187',
     marginTop: 2,
   },
 
   expiryText: {
     fontSize: 8,
-    color: '#596460',
+    color: '#526057',
     marginLeft: 5,
   },
 
@@ -309,7 +319,7 @@ export const UserDonationStyles = StyleSheet.create({
 
   locationCard: {
     minHeight: 50,
-    backgroundColor: '#F0F3F8',
+    backgroundColor: '#F7F5EF',
     borderRadius: 7,
     paddingHorizontal: 7,
     paddingVertical: 5,
@@ -321,7 +331,7 @@ export const UserDonationStyles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 6,
-    backgroundColor: '#DFF4EB',
+    backgroundColor: '#E2EDDF',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 6,
@@ -334,20 +344,20 @@ export const UserDonationStyles = StyleSheet.create({
   locationName: {
     fontSize: 8,
     fontWeight: '800',
-    color: '#35413D',
+    color: '#35443A',
   },
 
   locationAddress: {
     fontSize: 6.5,
     lineHeight: 8,
-    color: '#747E7A',
+    color: '#69766E',
     marginTop: 1,
   },
 
   editText: {
     fontSize: 7,
     fontWeight: '800',
-    color: '#00805A',
+    color: '#26734D',
     paddingHorizontal: 3,
   },
 
@@ -356,21 +366,21 @@ export const UserDonationStyles = StyleSheet.create({
   photoBox: {
     minHeight: 102,
     borderRadius: 7,
-    backgroundColor: '#EEF3FB',
+    backgroundColor: '#F1EFE8',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
   },
 
   photoBoxAdded: {
-    backgroundColor: '#EAF7F1',
+    backgroundColor: '#E9EEE2',
   },
 
   cameraCircle: {
     width: 29,
     height: 29,
     borderRadius: 15,
-    backgroundColor: '#DDF3EA',
+    backgroundColor: '#E2EDDF',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 3,
@@ -379,12 +389,12 @@ export const UserDonationStyles = StyleSheet.create({
   photoTitle: {
     fontSize: 7.5,
     fontWeight: '800',
-    color: '#596561',
+    color: '#526057',
   },
 
   photoSubtitle: {
     fontSize: 6.5,
-    color: '#7B8581',
+    color: '#899187',
     textAlign: 'center',
     lineHeight: 8,
     marginTop: 2,
@@ -405,7 +415,7 @@ export const UserDonationStyles = StyleSheet.create({
 
   photoOptionText: {
     fontSize: 6.5,
-    color: '#68736F',
+    color: '#69766E',
   },
 
   /* Buttons */
@@ -413,7 +423,7 @@ export const UserDonationStyles = StyleSheet.create({
   postDonationButton: {
     height: 27,
     borderRadius: 6,
-    backgroundColor: '#00805A',
+    backgroundColor: '#26734D',
     marginTop: 2,
     flexDirection: 'row',
     alignItems: 'center',
@@ -430,14 +440,14 @@ export const UserDonationStyles = StyleSheet.create({
   clearButton: {
     height: 25,
     borderRadius: 6,
-    backgroundColor: '#E7EEFC',
+    backgroundColor: '#E9EEE2',
     marginTop: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   clearButtonText: {
-    color: '#38443F',
+    color: '#35443A',
     fontSize: 7,
     fontWeight: '700',
   },
@@ -458,7 +468,7 @@ export const UserDonationStyles = StyleSheet.create({
   nearbyTitle: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#293530',
+    color: '#1C2C25',
     marginLeft: 3,
   },
 
@@ -467,7 +477,7 @@ export const UserDonationStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    backgroundColor: '#E0F5EC',
+    backgroundColor: '#E2EDDF',
     borderRadius: 8,
     paddingHorizontal: 5,
     paddingVertical: 2,
@@ -477,11 +487,11 @@ export const UserDonationStyles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#00A36D',
+    backgroundColor: '#26734D',
   },
 
   liveHubText: {
-    color: '#00805A',
+    color: '#26734D',
     fontSize: 6,
     fontWeight: '800',
   },
@@ -489,16 +499,16 @@ export const UserDonationStyles = StyleSheet.create({
   nearbySubtitle: {
     fontSize: 6.5,
     lineHeight: 8.5,
-    color: '#727D79',
+    color: '#69766E',
     marginTop: 2,
   },
 
   nearbyCard: {
     minHeight: 62,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFEFB',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E8ECEB',
+    borderColor: '#E8E5DC',
     marginBottom: 6,
     padding: 5,
     flexDirection: 'row',
@@ -524,7 +534,7 @@ export const UserDonationStyles = StyleSheet.create({
 
   nearbyBusiness: {
     fontSize: 6.5,
-    color: '#00805A',
+    color: '#26734D',
     fontWeight: '800',
     flex: 1,
   },
@@ -544,7 +554,7 @@ export const UserDonationStyles = StyleSheet.create({
     fontSize: 8.5,
     lineHeight: 10,
     fontWeight: '800',
-    color: '#343F3B',
+    color: '#1C2C25',
     marginTop: 2,
   },
 
@@ -563,6 +573,309 @@ export const UserDonationStyles = StyleSheet.create({
 
   nearbyMetaText: {
     fontSize: 6,
-    color: '#77817E',
+    color: '#899187',
+  },
+
+  trackingNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 16,
+    borderRadius: 17,
+    backgroundColor: '#E9EEE2',
+  },
+
+  trackingNoteCopy: {
+    flex: 1,
+  },
+
+  trackingNoteTitle: {
+    color: '#1C2C25',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  trackingNoteDescription: {
+    color: '#69766E',
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 4,
   },
 });
+
+export const UserDonationStyles = {
+  ...baseStyles,
+  container: { ...baseStyles.container, backgroundColor: '#F7F5EF' },
+  keyboardAvoiding: { flex: 1 },
+  scrollContent: {
+    ...baseStyles.scrollContent,
+    flexGrow: 1,
+    padding: 16,
+    paddingBottom: 28,
+    gap: 16,
+  },
+  scroll: { flex: 1 },
+  header: {
+    ...baseStyles.header,
+    minHeight: 64,
+    height: undefined,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    gap: 10,
+  },
+  headerTitle: { ...baseStyles.headerTitle, fontSize: 16 },
+  headerBadges: {
+    ...baseStyles.headerBadges,
+    flexWrap: 'wrap' as const,
+    gap: 8,
+    marginTop: 5,
+  },
+  headerBadge: {
+    ...baseStyles.headerBadge,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    gap: 5,
+  },
+  headerBadgeText: { ...baseStyles.headerBadgeText, fontSize: 11 },
+  wasteTarget: { ...baseStyles.wasteTarget, gap: 5 },
+  wasteTargetText: { ...baseStyles.wasteTargetText, fontSize: 11 },
+  headerProfile: {
+    ...baseStyles.headerProfile,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
+  titleSection: {
+    ...baseStyles.titleSection,
+    paddingTop: 4,
+    paddingHorizontal: 0,
+    marginBottom: 0,
+    gap: 8,
+  },
+  pageTitle: { ...baseStyles.pageTitle, fontSize: 25 },
+  pageDescription: {
+    ...baseStyles.pageDescription,
+    fontSize: 14,
+    lineHeight: 21,
+    marginTop: 0,
+  },
+  infoBanner: {
+    ...baseStyles.infoBanner,
+    minHeight: 54,
+    borderRadius: 15,
+    marginTop: 0,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 10,
+  },
+  infoBannerText: {
+    ...baseStyles.infoBannerText,
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  formCard: {
+    ...baseStyles.formCard,
+    borderRadius: 20,
+    padding: 18,
+    gap: 16,
+    shadowColor: '#1C2C25',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  formHeader: { ...baseStyles.formHeader, marginBottom: 0, gap: 10 },
+  formHeaderIcon: {
+    ...baseStyles.formHeaderIcon,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 0,
+  },
+  formTitle: { ...baseStyles.formTitle, fontSize: 16 },
+  requiredText: { ...baseStyles.requiredText, fontSize: 11 },
+  field: { ...baseStyles.field, marginBottom: 0, gap: 8 },
+  labelRow: { ...baseStyles.labelRow, marginBottom: 0 },
+  label: { ...baseStyles.label, fontSize: 13, marginBottom: 0 },
+  autoCategorized: { ...baseStyles.autoCategorized, gap: 5 },
+  autoCategorizedText: { ...baseStyles.autoCategorizedText, fontSize: 11 },
+  foodTypeSelector: {
+    ...baseStyles.foodTypeSelector,
+    height: 48,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+  },
+  foodTypeLeft: { ...baseStyles.foodTypeLeft, gap: 8 },
+  foodTypeText: { ...baseStyles.foodTypeText, fontSize: 14 },
+  dropdown: { ...baseStyles.dropdown, marginTop: 6, borderRadius: 12 },
+  dropdownItem: {
+    ...baseStyles.dropdownItem,
+    minHeight: 44,
+    paddingHorizontal: 12,
+  },
+  dropdownText: { ...baseStyles.dropdownText, fontSize: 13 },
+  textInputContainer: {
+    ...baseStyles.textInputContainer,
+    height: 48,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    gap: 8,
+  },
+  textInput: { ...baseStyles.textInput, height: 48, fontSize: 14 },
+  quantityInput: {
+    ...baseStyles.quantityInput,
+    height: 48,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    gap: 8,
+  },
+  quantityTextInput: {
+    ...baseStyles.quantityTextInput,
+    height: 48,
+    marginLeft: 0,
+    fontSize: 14,
+  },
+  quantityUnit: { ...baseStyles.quantityUnit, fontSize: 12 },
+  quantityHelper: {
+    ...baseStyles.quantityHelper,
+    fontSize: 11,
+    marginTop: 0,
+  },
+  expiryText: { ...baseStyles.expiryText, fontSize: 14, marginLeft: 8 },
+  locationCard: {
+    ...baseStyles.locationCard,
+    minHeight: 64,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 10,
+  },
+  locationIcon: {
+    ...baseStyles.locationIcon,
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    marginRight: 0,
+  },
+  locationName: { ...baseStyles.locationName, fontSize: 13 },
+  locationAddress: {
+    ...baseStyles.locationAddress,
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 3,
+  },
+  editText: { ...baseStyles.editText, fontSize: 12, paddingHorizontal: 6 },
+  photoBox: {
+    ...baseStyles.photoBox,
+    minHeight: 140,
+    borderRadius: 15,
+    paddingVertical: 16,
+  },
+  cameraCircle: {
+    ...baseStyles.cameraCircle,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    marginBottom: 8,
+  },
+  photoTitle: { ...baseStyles.photoTitle, fontSize: 13 },
+  photoSubtitle: {
+    ...baseStyles.photoSubtitle,
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 5,
+  },
+  photoOptions: { ...baseStyles.photoOptions, gap: 16, marginTop: 8 },
+  photoOption: { ...baseStyles.photoOption, gap: 5 },
+  photoOptionText: { ...baseStyles.photoOptionText, fontSize: 11 },
+  postDonationButton: {
+    ...baseStyles.postDonationButton,
+    height: 48,
+    borderRadius: 14,
+    marginTop: 0,
+    gap: 8,
+  },
+  postDonationText: { ...baseStyles.postDonationText, fontSize: 14 },
+  clearButton: {
+    ...baseStyles.clearButton,
+    height: 44,
+    borderRadius: 12,
+    marginTop: 0,
+  },
+  clearButtonText: { ...baseStyles.clearButtonText, fontSize: 13 },
+  nearbyHeader: {
+    ...baseStyles.nearbyHeader,
+    paddingTop: 0,
+    paddingHorizontal: 0,
+    paddingBottom: 0,
+  },
+  nearbyTitle: {
+    ...baseStyles.nearbyTitle,
+    fontSize: 17,
+    marginLeft: 6,
+  },
+  liveHubBadge: {
+    ...baseStyles.liveHubBadge,
+    marginLeft: 8,
+    gap: 5,
+    borderRadius: 12,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+  },
+  smallGreenDot: {
+    ...baseStyles.smallGreenDot,
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+  },
+  liveHubText: { ...baseStyles.liveHubText, fontSize: 10 },
+  nearbySubtitle: {
+    ...baseStyles.nearbySubtitle,
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 5,
+  },
+  nearbyCard: {
+    ...baseStyles.nearbyCard,
+    minHeight: 88,
+    borderRadius: 15,
+    marginBottom: 0,
+    padding: 12,
+    gap: 12,
+    shadowColor: '#1C2C25',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  nearbyImage: {
+    ...baseStyles.nearbyImage,
+    width: 72,
+    height: 68,
+    borderRadius: 11,
+    marginRight: 0,
+  },
+  nearbyBusiness: { ...baseStyles.nearbyBusiness, fontSize: 11 },
+  statusBadge: {
+    ...baseStyles.statusBadge,
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  statusBadgeText: { ...baseStyles.statusBadgeText, fontSize: 10 },
+  nearbyFoodTitle: {
+    ...baseStyles.nearbyFoodTitle,
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: 5,
+  },
+  nearbyMeta: { ...baseStyles.nearbyMeta, gap: 12, marginTop: 6 },
+  nearbyMetaItem: { ...baseStyles.nearbyMetaItem, gap: 4 },
+  nearbyMetaText: { ...baseStyles.nearbyMetaText, fontSize: 10 },
+  multilineInput: baseStyles.multilineInput,
+  trackingNote: baseStyles.trackingNote,
+  trackingNoteCopy: baseStyles.trackingNoteCopy,
+  trackingNoteTitle: baseStyles.trackingNoteTitle,
+  trackingNoteDescription: baseStyles.trackingNoteDescription,
+  bottomSpacing: { height: 24 },
+};

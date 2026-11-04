@@ -1,323 +1,836 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
   ScrollView,
+  StatusBar,
   Text,
-  TouchableOpacity,
+  TextInput,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
-import FontAwesome6 from "@react-native-vector-icons/fontawesome6";
-import {profileService} from "../../../tanstack/services/profileServices";
-import { useAuth } from "../../../tanstack/auth/AuthContext";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAuth } from '../../../tanstack/auth/AuthContext';
+import {
+  ProfileUpdate,
+  profileService,
+} from '../../../tanstack/services/profileServices';
+import { donationService } from '../../../tanstack/services/donationServices';
+import { RootStackParamList } from '../../../navigation/types';
+import { UserProfileStyles as styles } from '../../../styles/UserProfileStyles';
 
-import { UserProfileStyles } from "../../../styles/UserProfileStyles";
+type Navigation = NativeStackNavigationProp<RootStackParamList, 'UserProfile'>;
+type RecordValue = Record<string, unknown>;
+type ProfileField = 'name' | 'email' | 'avatar';
+
+const PROFILE_FIELDS: {
+  key: ProfileField;
+  label: string;
+  icon: React.ComponentProps<typeof MaterialDesignIcons>['name'];
+}[] = [
+  { key: 'name', label: 'Full name', icon: 'account-outline' },
+  { key: 'email', label: 'Email address', icon: 'email-outline' },
+  { key: 'avatar', label: 'Profile picture URL', icon: 'image-outline' },
+];
+
+const isRecord = (value: unknown): value is RecordValue =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+function getRecords(value: unknown): RecordValue[] {
+  const records: RecordValue[] = [];
+  const queue: unknown[] = [value];
+  const visited = new Set<object>();
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (Array.isArray(current)) {
+      queue.push(...current);
+    } else if (isRecord(current) && !visited.has(current)) {
+      visited.add(current);
+      records.push(current);
+      for (const key of ['data', 'user', 'profile', 'account']) {
+        if (current[key] !== undefined) {
+          queue.push(current[key]);
+        }
+      }
+    }
+  }
+  return records;
+}
+
+function getProfileRecord(value: unknown): RecordValue {
+  const records = getRecords(value);
+  return (
+    records.find(record => {
+      const name = record.name ?? record.fullName;
+      const email = record.email;
+      return typeof name === 'string' || typeof email === 'string';
+    }) ??
+    records[0] ??
+    {}
+  );
+}
+
+function getString(record: RecordValue, fields: string[]): string {
+  for (const field of fields) {
+    const value = Object.entries(record).find(
+      ([key]) => key.toLowerCase() === field.toLowerCase(),
+    )?.[1];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+  return '';
+}
+
+function getDonationList(value: unknown): RecordValue[] {
+  if (Array.isArray(value)) {
+    return value.filter(isRecord);
+  }
+  if (!isRecord(value)) {
+    return [];
+  }
+  for (const key of ['donations', 'items', 'results', 'history']) {
+    if (Array.isArray(value[key])) {
+      return (value[key] as unknown[]).filter(isRecord);
+    }
+  }
+  return isRecord(value.data) || Array.isArray(value.data)
+    ? getDonationList(value.data)
+    : [];
+}
+
+function getDonationStatus(donation: RecordValue): string {
+  const status = getString(donation, ['status', 'donationStatus']);
+  return status || 'Posted';
+}
+
+function getInitials(name: string): string {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(part => part.charAt(0))
+    .join('')
+    .toUpperCase();
+  return initials || 'U';
+}
+
+function isValidValue(field: ProfileField, value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return false;
+  }
+  if (field === 'email') {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+  }
+  if (field === 'avatar') {
+    try {
+      const url = new URL(trimmed);
+      return url.protocol === 'https:' || url.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  }
+  return trimmed.length >= 2;
+}
 
 export default function UserProfile() {
-const [profileData, setProfileData] = React.useState<{ name?: string } | null>(null);
-const { token } = useAuth();
+  const navigation = useNavigation<Navigation>();
+  const { token } = useAuth();
+  const [profile, setProfile] = useState<RecordValue | null>(null);
+  const [donations, setDonations] = useState<RecordValue[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [profileError, setProfileError] = useState('');
+  const [modalError, setModalError] = useState('');
+  const [donationError, setDonationError] = useState('');
+  const [field, setField] = useState<ProfileField>('name');
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isFieldPickerOpen, setIsFieldPickerOpen] = useState(false);
+  const [newValue, setNewValue] = useState('');
+  const [verifiedValue, setVerifiedValue] = useState('');
+  const [cooldownStarted, setCooldownStarted] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
-React.useEffect(() => {
-  if (!token) {
-    setProfileData(null);
-    return;
-  }
+  useFocusEffect(
+    useCallback(() => {
+      let isCurrent = true;
 
-  const fetchProfile = async () => {
+      const loadProfile = async () => {
+        setIsLoading(true);
+        setProfileError('');
+        setDonationError('');
+        try {
+          if (!token) {
+            setProfile(null);
+            setDonations([]);
+            throw new Error('You need to sign in again to view your profile.');
+          }
+          const response = await profileService.getProfile(token);
+          const currentProfile = getProfileRecord(response);
+          if (isCurrent) {
+            setProfile(currentProfile);
+            setAvatarFailed(false);
+          }
+
+          try {
+            const records = getRecords(response);
+            const donorId = records
+              .flatMap(record => Object.entries(record))
+              .find(([key, value]) => {
+                const normalizedKey = key.toLowerCase();
+                return (
+                  ['_id', 'id', 'userid', 'donorid'].includes(normalizedKey) &&
+                  (typeof value === 'string' || typeof value === 'number')
+                );
+              })?.[1];
+            if (
+              donorId === undefined ||
+              donorId === null ||
+              !String(donorId).trim()
+            ) {
+              throw new Error(
+                'Your profile does not include a donor ID, so donation history is unavailable.',
+              );
+            }
+            const donationResponse = await donationService.getDonationsByDonor(
+              token,
+              String(donorId),
+            );
+            if (isCurrent) {
+              setDonations(getDonationList(donationResponse));
+            }
+          } catch (error) {
+            if (isCurrent) {
+              setDonationError(
+                error instanceof Error
+                  ? error.message
+                  : 'Unable to load your donation history.',
+              );
+            }
+          }
+        } catch (error) {
+          if (isCurrent) {
+            setProfileError(
+              error instanceof Error
+                ? error.message
+                : 'Unable to load your profile. Please try again.',
+            );
+          }
+        } finally {
+          if (isCurrent) {
+            setIsLoading(false);
+          }
+        }
+      };
+
+      loadProfile();
+      return () => {
+        isCurrent = false;
+      };
+    }, [token]),
+  );
+
+  useEffect(() => {
+    if (!cooldownStarted || cooldownSeconds <= 0) {
+      return undefined;
+    }
+    const timer = setTimeout(() => {
+      setCooldownSeconds(seconds => Math.max(0, seconds - 1));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [cooldownStarted, cooldownSeconds]);
+
+  const name = profile ? getString(profile, ['name', 'fullName']) : '';
+  const email = profile ? getString(profile, ['email']) : '';
+  const avatar = profile
+    ? getString(profile, ['avatar', 'profilePicture', 'avatarUrl', 'image'])
+    : '';
+  const role = profile ? getString(profile, ['role']) : '';
+  const createdAt = profile
+    ? getString(profile, ['createdAt', 'created_at', 'joinedAt'])
+    : '';
+  const joinedDate = useMemo(() => {
+    if (!createdAt) {
+      return 'Member';
+    }
+    const date = new Date(createdAt);
+    return Number.isNaN(date.getTime())
+      ? 'Member'
+      : `Member since ${date.toLocaleDateString(undefined, {
+          month: 'short',
+          year: 'numeric',
+        })}`;
+  }, [createdAt]);
+  const activeDonations = donations.filter(donation => {
+    const status = getDonationStatus(donation).toLowerCase();
+    return ![
+      'delivered',
+      'complete',
+      'completed',
+      'cancelled',
+      'canceled',
+      'rejected',
+      'expired',
+    ].includes(status);
+  }).length;
+  const currentValue =
+    field === 'name' ? name : field === 'email' ? email : avatar;
+  const normalizedNewValue =
+    field === 'email' ? newValue.trim().toLowerCase() : newValue.trim();
+  const normalizedVerifiedValue =
+    field === 'email'
+      ? verifiedValue.trim().toLowerCase()
+      : verifiedValue.trim();
+  const normalizedCurrentValue =
+    field === 'email' ? currentValue.trim().toLowerCase() : currentValue.trim();
+  const canConfirm =
+    isValidValue(field, newValue) &&
+    isValidValue(field, verifiedValue) &&
+    normalizedNewValue === normalizedVerifiedValue &&
+    normalizedNewValue !== normalizedCurrentValue;
+
+  const clearConfirmation = () => {
+    setCooldownStarted(false);
+    setCooldownSeconds(0);
+  };
+
+  const openEditor = () => {
+    setField('name');
+    setNewValue(name);
+    setVerifiedValue('');
+    setModalError('');
+    clearConfirmation();
+    setIsEditOpen(true);
+  };
+
+  const closeEditor = () => {
+    setIsEditOpen(false);
+    setIsFieldPickerOpen(false);
+    setModalError('');
+    clearConfirmation();
+  };
+
+  const selectField = (newField: ProfileField) => {
+    setField(newField);
+    setNewValue(
+      newField === 'name' ? name : newField === 'email' ? email : avatar,
+    );
+    setVerifiedValue('');
+    setModalError('');
+    setIsFieldPickerOpen(false);
+    clearConfirmation();
+  };
+
+  const confirmChange = async () => {
+    if (!canConfirm || isSaving) {
+      return;
+    }
+    if (!cooldownStarted) {
+      setCooldownStarted(true);
+      setCooldownSeconds(3);
+      return;
+    }
+    if (cooldownSeconds > 0) {
+      return;
+    }
+    if (!token) {
+      setModalError('You need to sign in again before changing your profile.');
+      return;
+    }
+
+    const value =
+      field === 'email' ? newValue.trim().toLowerCase() : newValue.trim();
+    const update: ProfileUpdate = {};
+    update[field] = value;
+    setIsSaving(true);
+    setModalError('');
     try {
-      const data = await profileService.getProfile(token);
-      setProfileData(data);
+      await profileService.updateProfile(token, update);
+      setProfile(previous =>
+        previous ? { ...previous, [field]: value } : { [field]: value },
+      );
+      if (field === 'avatar') {
+        setAvatarFailed(false);
+      }
+      closeEditor();
     } catch (error) {
-      console.error("Error fetching profile:", error);
+      setModalError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to update your profile. Please try again.',
+      );
+      clearConfirmation();
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  fetchProfile();
-}, [token]);
   return (
-    <SafeAreaView style={UserProfileStyles.container}>
-      {/* Header */}
-      <View style={UserProfileStyles.header}>
-        <TouchableOpacity>
-          <MaterialDesignIcons
-            name="menu"
-            size={21}
-            color="#65706D"
-          />
-        </TouchableOpacity>
-
-        <Text style={UserProfileStyles.headerTitle}>
-          Vitality Logistics
-        </Text>
-
-        <TouchableOpacity>
-          <MaterialDesignIcons
-            name="bell-outline"
-            size={20}
-            color="#65706D"
-          />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F7F5EF" />
+      <View style={styles.header}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Back to dashboard"
+          onPress={() => navigation.goBack()}
+          style={styles.headerButton}
+        >
+          <MaterialDesignIcons name="arrow-left" size={22} color="#173F32" />
+        </Pressable>
+        <Text style={styles.headerTitle}>Your profile</Text>
+        <View style={styles.headerSpacer} />
       </View>
 
       <ScrollView
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={UserProfileStyles.scrollContent}
       >
-        {/* Cover Photo */}
-        <View style={UserProfileStyles.profileHeader}>
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=900&q=80",
-            }}
-            style={UserProfileStyles.coverImage}
-          />
-
-          {/* Profile Picture */}
-          <View style={UserProfileStyles.avatarWrapper}>
-            <Image
-              source={{
-                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
-              }}
-              style={UserProfileStyles.avatar}
-            />
-          </View>
-
-          {/* Edit Profile */}
-          <TouchableOpacity
-            style={UserProfileStyles.editButton}
-            activeOpacity={0.8}
-          >
-            <Text style={UserProfileStyles.editButtonText}>
-              Edit Profile
-            </Text>
-          </TouchableOpacity>
-
-          {/* User Information */}
-          <View style={UserProfileStyles.userInfo}>
-            <Text style={UserProfileStyles.userName}>
-              { profileData ? profileData.name : "Loading..." }
-            </Text>
-
-            <View style={UserProfileStyles.infoRow}>
-              <MaterialDesignIcons
-                name="storefront-outline"
-                size={13}
-                color="#65706D"
-              />
-
-              <Text style={UserProfileStyles.infoText}>
-                Green Heart Bakery
-              </Text>
-            </View>
-
-            <View style={UserProfileStyles.infoRow}>
-              <MaterialDesignIcons
-                name="map-marker-outline"
-                size={13}
-                color="#65706D"
-              />
-
-              <Text style={UserProfileStyles.infoText}>
-                Portland, OR
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Community Impact */}
-        <Text style={UserProfileStyles.sectionTitle}>
-          Community Impact
-        </Text>
-
-        <View style={UserProfileStyles.impactRow}>
-          {/* Meals Shared */}
-          <View style={UserProfileStyles.impactCard}>
-            <View style={UserProfileStyles.impactTitleRow}>
-              <MaterialDesignIcons
-                name="food-outline"
-                size={15}
-                color="#00875A"
-              />
-
-              <Text style={UserProfileStyles.impactLabel}>
-                Meals Shared
-              </Text>
-            </View>
-
-            <Text style={UserProfileStyles.impactNumber}>
-              1,420
-            </Text>
-
-            <Text style={UserProfileStyles.impactGrowth}>
-              ↗ +12% this month
-            </Text>
-          </View>
-
-          {/* Shelters */}
-          <View style={UserProfileStyles.impactCard}>
-            <View style={UserProfileStyles.impactTitleRow}>
-              <MaterialDesignIcons
-                name="home-city-outline"
-                size={15}
-                color="#D86B20"
-              />
-
-              <Text style={UserProfileStyles.impactLabelOrange}>
-                Shelters
-              </Text>
-            </View>
-
-            <Text style={UserProfileStyles.impactNumber}>
-              4
-            </Text>
-
-            <Text style={UserProfileStyles.impactDescription}>
-              Active partnerships
-            </Text>
-          </View>
-        </View>
-
-        {/* Total Food Rescued */}
-        <View style={UserProfileStyles.rescuedCard}>
-          <View>
-            <Text style={UserProfileStyles.rescuedLabel}>
-              Total Food Rescued
-            </Text>
-
-            <Text style={UserProfileStyles.rescuedNumber}>
-              2,850 lbs
-            </Text>
-          </View>
-
-          <View style={UserProfileStyles.rescuedIcon}>
+        {profileError ? (
+          <View style={styles.errorBanner}>
             <MaterialDesignIcons
-              name="leaf"
+              name="alert-circle-outline"
               size={19}
-              color="#00875A"
+              color="#A33D32"
             />
+            <Text style={styles.errorText}>{profileError}</Text>
           </View>
-        </View>
+        ) : null}
 
-        {/* About */}
-        <View style={UserProfileStyles.aboutCard}>
-          <View style={UserProfileStyles.aboutTitleRow}>
-            <MaterialDesignIcons
-              name="information-outline"
-              size={17}
-              color="#3F4846"
-            />
-
-            <Text style={UserProfileStyles.aboutTitle}>
-              About
-            </Text>
+        {isLoading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="#26734D" />
+            <Text style={styles.loadingText}>Loading your profile…</Text>
           </View>
-
-          <Text style={UserProfileStyles.aboutText}>
-            Green Heart Bakery is committed to ensuring no good
-            food goes to waste. We bake fresh artisan breads and
-            pastries daily. Any surplus at the end of the day is
-            proudly donated to local shelters and community
-            centers to support those in need in the Portland area.
-          </Text>
-
-          <View style={UserProfileStyles.aboutDivider} />
-
-          {/* Donor Since / Status */}
-          <View style={UserProfileStyles.detailsRow}>
-            <View style={UserProfileStyles.detailBox}>
-              <Text style={UserProfileStyles.detailLabel}>
-                Donor Since
-              </Text>
-
-              <Text style={UserProfileStyles.detailValue}>
-                Mar 2023
-              </Text>
-            </View>
-
-            <View style={UserProfileStyles.detailBox}>
-              <Text style={UserProfileStyles.detailLabel}>
-                Status
-              </Text>
-
-              <View style={UserProfileStyles.verifiedRow}>
+        ) : profile ? (
+          <>
+            <View style={styles.heroCard}>
+              <View style={styles.heroTopRow}>
+                <View style={styles.avatarFrame}>
+                  {avatar && !avatarFailed ? (
+                    <Image
+                      source={{ uri: avatar }}
+                      style={styles.avatar}
+                      onError={() => setAvatarFailed(true)}
+                    />
+                  ) : (
+                    <View style={styles.avatarFallback}>
+                      <Text style={styles.avatarInitials}>
+                        {getInitials(name)}
+                      </Text>
+                    </View>
+                  )}
+                  <View style={styles.avatarBadge}>
+                    <MaterialDesignIcons
+                      name="leaf"
+                      size={13}
+                      color="#FFFFFF"
+                    />
+                  </View>
+                </View>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={openEditor}
+                  style={styles.editButton}
+                >
+                  <MaterialDesignIcons
+                    name="pencil-outline"
+                    size={16}
+                    color="#26734D"
+                  />
+                  <Text style={styles.editButtonText}>Edit details</Text>
+                </Pressable>
+              </View>
+              <Text style={styles.name}>{name || 'Food rescue member'}</Text>
+              <Text style={styles.email}>{email || 'Email not provided'}</Text>
+              <View style={styles.memberRow}>
                 <MaterialDesignIcons
-                  name="check-circle"
-                  size={13}
-                  color="#00875A"
+                  name="calendar-blank-outline"
+                  size={15}
+                  color="#899187"
                 />
-
-                <Text style={UserProfileStyles.verifiedText}>
-                  Verified
-                </Text>
+                <Text style={styles.memberText}>{joinedDate}</Text>
+                {role ? (
+                  <View style={styles.rolePill}>
+                    <Text style={styles.roleText}>{role}</Text>
+                  </View>
+                ) : null}
               </View>
             </View>
-          </View>
-        </View>
 
-        {/* Bottom spacing for floating button */}
-        <View style={UserProfileStyles.bottomSpacing} />
+            <View style={styles.sectionHeading}>
+              <View>
+                <Text style={styles.eyebrow}>YOUR CONTRIBUTION</Text>
+                <Text style={styles.sectionTitle}>Food rescued together</Text>
+              </View>
+              <MaterialDesignIcons
+                name="sprout-outline"
+                size={24}
+                color="#26734D"
+              />
+            </View>
+            <View style={styles.statsRow}>
+              <View style={styles.statCard}>
+                <View style={[styles.statIcon, styles.greenTint]}>
+                  <MaterialDesignIcons
+                    name="food-apple-outline"
+                    size={19}
+                    color="#26734D"
+                  />
+                </View>
+                <Text style={styles.statValue}>
+                  {donationError ? '—' : donations.length}
+                </Text>
+                <Text style={styles.statLabel}>Total donations</Text>
+              </View>
+              <View style={styles.statCard}>
+                <View style={[styles.statIcon, styles.goldTint]}>
+                  <MaterialDesignIcons
+                    name="heart-outline"
+                    size={19}
+                    color="#8C6819"
+                  />
+                </View>
+                <Text style={styles.statValue}>
+                  {donationError ? '—' : activeDonations}
+                </Text>
+                <Text style={styles.statLabel}>Active listings</Text>
+              </View>
+            </View>
+
+            <View style={styles.detailsCard}>
+              <View style={styles.detailsTitleRow}>
+                <View style={styles.detailsTitleIcon}>
+                  <MaterialDesignIcons
+                    name="account-circle-outline"
+                    size={19}
+                    color="#26734D"
+                  />
+                </View>
+                <View>
+                  <Text style={styles.detailsTitle}>Account details</Text>
+                  <Text style={styles.detailsSubtitle}>
+                    Keep your contact information up to date.
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.detailRow}>
+                <MaterialDesignIcons
+                  name="account-outline"
+                  size={18}
+                  color="#899187"
+                />
+                <View style={styles.detailCopy}>
+                  <Text style={styles.detailLabel}>Name</Text>
+                  <Text style={styles.detailValue}>
+                    {name || 'Not provided'}
+                  </Text>
+                </View>
+                <MaterialDesignIcons
+                  name="chevron-right"
+                  size={20}
+                  color="#B0B5AC"
+                />
+              </View>
+              <View style={styles.divider} />
+              <View style={styles.detailRow}>
+                <MaterialDesignIcons
+                  name="email-outline"
+                  size={18}
+                  color="#899187"
+                />
+                <View style={styles.detailCopy}>
+                  <Text style={styles.detailLabel}>Email</Text>
+                  <Text style={styles.detailValue}>
+                    {email || 'Not provided'}
+                  </Text>
+                </View>
+                <MaterialDesignIcons
+                  name="chevron-right"
+                  size={20}
+                  color="#B0B5AC"
+                />
+              </View>
+            </View>
+
+            <View style={styles.historyCard}>
+              <View style={styles.historyTitleRow}>
+                <View>
+                  <Text style={styles.eyebrow}>YOUR ACTIVITY</Text>
+                  <Text style={styles.sectionTitle}>Recent donations</Text>
+                </View>
+                <MaterialDesignIcons
+                  name="food-outline"
+                  size={22}
+                  color="#26734D"
+                />
+              </View>
+              {donationError ? (
+                <Text style={styles.mutedMessage}>{donationError}</Text>
+              ) : donations.length > 0 ? (
+                donations.slice(0, 3).map((donation, index) => (
+                  <View
+                    key={
+                      getString(donation, ['_id', 'id', 'donationId']) ||
+                      `donation-${index}`
+                    }
+                    style={styles.donationRow}
+                  >
+                    <View style={styles.donationIcon}>
+                      <MaterialDesignIcons
+                        name="food-variant"
+                        size={18}
+                        color="#26734D"
+                      />
+                    </View>
+                    <View style={styles.donationCopy}>
+                      <Text style={styles.donationName} numberOfLines={1}>
+                        {getString(donation, [
+                          'itemName',
+                          'foodName',
+                          'title',
+                        ]) || 'Food donation'}
+                      </Text>
+                      <Text style={styles.donationStatus}>
+                        {getDonationStatus(donation)}
+                      </Text>
+                    </View>
+                    <MaterialDesignIcons
+                      name="chevron-right"
+                      size={20}
+                      color="#B0B5AC"
+                    />
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.mutedMessage}>
+                  {donations.length === 0
+                    ? 'Your donation activity will appear here.'
+                    : ''}
+                </Text>
+              )}
+            </View>
+
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => navigation.navigate('UserDonation')}
+              style={styles.postButton}
+            >
+              <MaterialDesignIcons name="plus" size={20} color="#FFFFFF" />
+              <Text style={styles.postButtonText}>
+                Share food with your community
+              </Text>
+            </Pressable>
+          </>
+        ) : null}
       </ScrollView>
 
-      {/* Post Food Button */}
-      <TouchableOpacity
-        style={UserProfileStyles.postFoodButton}
-        activeOpacity={0.85}
+      <Modal
+        animationType="fade"
+        transparent
+        visible={isEditOpen}
+        onRequestClose={closeEditor}
       >
-        <MaterialDesignIcons
-          name="plus-box-outline"
-          size={16}
-          color="#FFFFFF"
-        />
-
-        <Text style={UserProfileStyles.postFoodText}>
-          Post Food
-        </Text>
-      </TouchableOpacity>
-
-      {/* Bottom Navigation */}
-      <View style={UserProfileStyles.bottomNav}>
-        <TouchableOpacity style={UserProfileStyles.navItem}>
-          <MaterialDesignIcons
-            name="view-grid-outline"
-            size={19}
-            color="#64706D"
-          />
-
-          <Text style={UserProfileStyles.navText}>
-            Overview
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={UserProfileStyles.navItem}>
-          <MaterialDesignIcons
-            name="plus-circle-outline"
-            size={19}
-            color="#64706D"
-          />
-
-          <Text style={UserProfileStyles.navText}>
-            Actions
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            UserProfileStyles.navItem,
-            UserProfileStyles.activeNavItem,
-          ]}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.modalBackdrop}
         >
-          <FontAwesome6
-            name="user"
-            size={15}
-            color="#FFFFFF"
-          />
+          <View style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalTitleGroup}>
+                <Text style={styles.modalEyebrow}>PROFILE SETTINGS</Text>
+                <Text style={styles.modalTitle}>Update your details</Text>
+              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Close profile editor"
+                onPress={closeEditor}
+                style={styles.closeButton}
+              >
+                <MaterialDesignIcons name="close" size={21} color="#59665B" />
+              </Pressable>
+            </View>
+            <Text style={styles.modalDescription}>
+              Make one change at a time. Re-enter the new value to verify it
+              before confirming.
+            </Text>
 
-          <Text style={UserProfileStyles.activeNavText}>
-            Profile
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.inputLabel}>DETAIL TO UPDATE</Text>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => setIsFieldPickerOpen(open => !open)}
+              style={styles.fieldSelect}
+            >
+              <MaterialDesignIcons
+                name={
+                  PROFILE_FIELDS.find(option => option.key === field)?.icon ??
+                  'pencil'
+                }
+                size={19}
+                color="#26734D"
+              />
+              <Text style={styles.fieldSelectText}>
+                {PROFILE_FIELDS.find(option => option.key === field)?.label}
+              </Text>
+              <MaterialDesignIcons
+                name={isFieldPickerOpen ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color="#899187"
+              />
+            </Pressable>
+            {isFieldPickerOpen ? (
+              <View style={styles.fieldOptions}>
+                {PROFILE_FIELDS.map(option => (
+                  <Pressable
+                    key={option.key}
+                    accessibilityRole="button"
+                    onPress={() => selectField(option.key)}
+                    style={[
+                      styles.fieldOption,
+                      field === option.key && styles.selectedFieldOption,
+                    ]}
+                  >
+                    <MaterialDesignIcons
+                      name={option.icon}
+                      size={18}
+                      color={field === option.key ? '#26734D' : '#899187'}
+                    />
+                    <Text
+                      style={[
+                        styles.fieldOptionText,
+                        field === option.key && styles.selectedFieldOptionText,
+                      ]}
+                    >
+                      {option.label}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            ) : null}
+
+            <Text style={styles.inputLabel}>
+              {field === 'avatar'
+                ? 'NEW IMAGE URL'
+                : `NEW ${field.toUpperCase()}`}
+            </Text>
+            <TextInput
+              accessibilityLabel={`New ${field}`}
+              autoCapitalize={field === 'name' ? 'words' : 'none'}
+              autoCorrect={field === 'name'}
+              keyboardType={field === 'email' ? 'email-address' : 'default'}
+              onChangeText={value => {
+                setNewValue(value);
+                clearConfirmation();
+              }}
+              placeholder={
+                field === 'avatar'
+                  ? 'https://example.com/photo.jpg'
+                  : `Enter your new ${field}`
+              }
+              placeholderTextColor="#A1A69C"
+              style={styles.textInput}
+              value={newValue}
+            />
+            <Text style={styles.inputLabel}>RE-ENTER TO VERIFY</Text>
+            <TextInput
+              accessibilityLabel={`Re-enter new ${field}`}
+              autoCapitalize={field === 'name' ? 'words' : 'none'}
+              autoCorrect={false}
+              keyboardType={field === 'email' ? 'email-address' : 'default'}
+              onChangeText={value => {
+                setVerifiedValue(value);
+                clearConfirmation();
+              }}
+              placeholder={`Re-enter your new ${field}`}
+              placeholderTextColor="#A1A69C"
+              style={styles.textInput}
+              value={verifiedValue}
+            />
+            {verifiedValue.length > 0 &&
+            newValue.trim().toLowerCase() !==
+              verifiedValue.trim().toLowerCase() ? (
+              <Text style={styles.validationError}>
+                The values do not match.
+              </Text>
+            ) : null}
+            {newValue.length > 0 && !isValidValue(field, newValue) ? (
+              <Text style={styles.validationError}>
+                {field === 'email'
+                  ? 'Enter a valid email address.'
+                  : field === 'avatar'
+                  ? 'Enter a valid http or https image URL.'
+                  : 'Name must be at least 2 characters.'}
+              </Text>
+            ) : null}
+            {cooldownStarted ? (
+              <View style={styles.cooldownNotice}>
+                <MaterialDesignIcons
+                  name="shield-check-outline"
+                  size={18}
+                  color="#8C6819"
+                />
+                <Text style={styles.cooldownText}>
+                  {cooldownSeconds > 0
+                    ? `Review your change. You can confirm in ${cooldownSeconds} second${
+                        cooldownSeconds === 1 ? '' : 's'
+                      }.`
+                    : 'Ready when you are. Confirm once more to save this change.'}
+                </Text>
+              </View>
+            ) : null}
+            {modalError ? (
+              <Text style={styles.validationError}>{modalError}</Text>
+            ) : null}
+
+            <View style={styles.modalActions}>
+              <Pressable
+                accessibilityRole="button"
+                onPress={closeEditor}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                disabled={!canConfirm || isSaving || cooldownSeconds > 0}
+                onPress={() => confirmChange()}
+                style={[
+                  styles.confirmButton,
+                  (!canConfirm || isSaving || cooldownSeconds > 0) &&
+                    styles.disabledButton,
+                ]}
+              >
+                {isSaving ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <>
+                    <MaterialDesignIcons
+                      name={cooldownStarted ? 'check' : 'lock-check-outline'}
+                      size={17}
+                      color="#FFFFFF"
+                    />
+                    <Text style={styles.confirmButtonText}>
+                      {cooldownSeconds > 0
+                        ? `Wait ${cooldownSeconds}s`
+                        : cooldownStarted
+                        ? 'Confirm & save'
+                        : 'Review & confirm'}
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </SafeAreaView>
   );
 }

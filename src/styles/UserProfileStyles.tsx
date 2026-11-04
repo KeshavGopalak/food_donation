@@ -1,420 +1,517 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const UserProfileStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F7F6",
+    backgroundColor: '#F7F5EF',
   },
-
-  scrollContent: {
-    paddingBottom: 90,
-  },
-
-  /* =========================
-     HEADER
-  ========================= */
-
   header: {
-    height: 43,
-    backgroundColor: "#FFFFFF",
+    minHeight: 54,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: "#E7EBE9",
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-
-    paddingHorizontal: 16,
+    borderBottomColor: '#E8E5DC',
   },
-
+  headerButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E8EDDF',
+  },
   headerTitle: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#007B5E",
+    color: '#1C2C25',
+    fontSize: 17,
+    fontWeight: '700',
   },
-
-  /* =========================
-     PROFILE HEADER
-  ========================= */
-
-  profileHeader: {
-    backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E5E2",
-    paddingBottom: 13,
+  headerSpacer: {
+    width: 38,
   },
-
-  coverImage: {
-    width: "100%",
-    height: 70,
-    resizeMode: "cover",
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 36,
   },
-
-  avatarWrapper: {
-    position: "absolute",
-    top: 43,
-    left: 17,
-
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-
-    backgroundColor: "#FFFFFF",
-    padding: 3,
-
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
+  errorBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 9,
+    backgroundColor: '#FBE9E5',
+    borderRadius: 13,
+    padding: 13,
+    marginBottom: 14,
   },
-
-  avatar: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 27,
-  },
-
-  editButton: {
-    position: "absolute",
-    right: 9,
-    top: 78,
-
-    borderWidth: 1,
-    borderColor: "#00875A",
-    borderRadius: 16,
-
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-
-    backgroundColor: "#FFFFFF",
-  },
-
-  editButtonText: {
-    color: "#007B5E",
-    fontSize: 10,
-    fontWeight: "600",
-  },
-
-  userInfo: {
-    paddingHorizontal: 17,
-    paddingTop: 38,
-  },
-
-  userName: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#293331",
-    marginBottom: 5,
-  },
-
-  infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 3,
-  },
-
-  infoText: {
-    fontSize: 9,
-    color: "#697572",
-    marginLeft: 4,
-  },
-
-  /* =========================
-     COMMUNITY IMPACT
-  ========================= */
-
-  sectionTitle: {
-    fontSize: 11,
-    fontWeight: "700",
-    color: "#35403D",
-
-    paddingHorizontal: 9,
-    marginTop: 12,
-    marginBottom: 5,
-  },
-
-  impactRow: {
-    flexDirection: "row",
-    paddingHorizontal: 8,
-    gap: 5,
-  },
-
-  impactCard: {
+  errorText: {
+    color: '#873A32',
+    fontSize: 13,
+    lineHeight: 19,
     flex: 1,
-    minHeight: 67,
-
-    backgroundColor: "#FFFFFF",
+  },
+  loading: {
+    minHeight: 280,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#697469',
+  },
+  heroCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 22,
+    padding: 20,
     borderWidth: 1,
-    borderColor: "#DDE5E1",
-    borderRadius: 7,
-
-    padding: 8,
+    borderColor: '#EAE7DE',
+    shadowColor: '#384438',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    elevation: 2,
   },
-
-  impactTitleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 3,
+  heroTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
-
-  impactLabel: {
-    fontSize: 7,
-    fontWeight: "700",
-    color: "#00875A",
-    marginLeft: 3,
+  avatarFrame: {
+    width: 84,
+    height: 84,
+    borderRadius: 26,
+    padding: 4,
+    backgroundColor: '#E8EDDF',
+    position: 'relative',
   },
-
-  impactLabelOrange: {
-    fontSize: 7,
-    fontWeight: "700",
-    color: "#C75D20",
-    marginLeft: 3,
+  avatar: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 23,
   },
-
-  impactNumber: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#26312E",
-    marginBottom: 1,
+  avatarFallback: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#DDE8D8',
   },
-
-  impactGrowth: {
-    fontSize: 7,
-    color: "#00875A",
+  avatarInitials: {
+    color: '#26734D',
+    fontSize: 26,
+    fontWeight: '700',
   },
-
-  impactDescription: {
-    fontSize: 7,
-    color: "#697572",
+  avatarBadge: {
+    position: 'absolute',
+    bottom: -3,
+    right: -3,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    backgroundColor: '#26734D',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-
-  /* =========================
-     FOOD RESCUED
-  ========================= */
-
-  rescuedCard: {
-    marginHorizontal: 8,
-    marginTop: 5,
-
-    minHeight: 45,
-
-    borderRadius: 7,
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    borderRadius: 18,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderColor: '#D9E5D6',
     borderWidth: 1,
-    borderColor: "#BFDCD4",
-
-    backgroundColor: "#E7F5F1",
-
-    paddingHorizontal: 10,
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: '#F8FAF5',
   },
-
-  rescuedLabel: {
-    fontSize: 7,
-    color: "#4E6963",
-    marginBottom: 1,
-  },
-
-  rescuedNumber: {
+  editButtonText: {
+    color: '#26734D',
     fontSize: 12,
-    fontWeight: "700",
-    color: "#00875A",
+    fontWeight: '700',
   },
-
-  rescuedIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-
-    backgroundColor: "#D1ECE5",
-
-    alignItems: "center",
-    justifyContent: "center",
+  name: {
+    marginTop: 18,
+    color: '#1C2C25',
+    fontSize: 23,
+    fontWeight: '700',
+    letterSpacing: -0.3,
   },
-
-  /* =========================
-     ABOUT
-  ========================= */
-
-  aboutCard: {
-    marginHorizontal: 8,
-    marginTop: 8,
-
-    backgroundColor: "#FFFFFF",
-    borderRadius: 7,
-
+  email: {
+    marginTop: 5,
+    color: '#697469',
+    fontSize: 14,
+  },
+  memberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 14,
+  },
+  memberText: {
+    color: '#899187',
+    fontSize: 12,
+  },
+  rolePill: {
+    marginLeft: 5,
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 12,
+    backgroundColor: '#F6E7B8',
+  },
+  roleText: {
+    color: '#765817',
+    fontSize: 10,
+    fontWeight: '700',
+    textTransform: 'capitalize',
+  },
+  sectionHeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 27,
+    marginBottom: 13,
+  },
+  eyebrow: {
+    color: '#8C6819',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1.1,
+  },
+  sectionTitle: {
+    marginTop: 4,
+    color: '#1C2C25',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  statCard: {
+    flex: 1,
+    minHeight: 140,
+    padding: 15,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: "#DDE5E1",
-
-    padding: 10,
+    borderColor: '#EAE7DE',
   },
-
-  aboutTitleRow: {
-    flexDirection: "row",
-    alignItems: "center",
+  statIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  greenTint: {
+    backgroundColor: '#E2EDDF',
+  },
+  goldTint: {
+    backgroundColor: '#F6E7B8',
+  },
+  statValue: {
+    marginTop: 12,
+    color: '#1C2C25',
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  statLabel: {
+    marginTop: 2,
+    color: '#899187',
+    fontSize: 11,
+  },
+  detailsCard: {
+    marginTop: 18,
+    padding: 17,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#EAE7DE',
+  },
+  detailsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 11,
     marginBottom: 8,
   },
-
-  aboutTitle: {
+  detailsTitleIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E2EDDF',
+  },
+  detailsTitle: {
+    color: '#1C2C25',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  detailsSubtitle: {
+    marginTop: 3,
+    color: '#899187',
     fontSize: 11,
-    fontWeight: "700",
-    color: "#35403D",
-    marginLeft: 5,
   },
-
-  aboutText: {
-    fontSize: 9,
-    lineHeight: 14,
-    color: "#596561",
+  detailRow: {
+    minHeight: 61,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
-
-  aboutDivider: {
-    height: 1,
-    backgroundColor: "#E4E9E7",
-    marginVertical: 9,
-  },
-
-  detailsRow: {
-    flexDirection: "row",
-    gap: 8,
-  },
-
-  detailBox: {
+  detailCopy: {
     flex: 1,
-
-    height: 37,
-
-    borderWidth: 1,
-    borderColor: "#E0E7E4",
-    borderRadius: 5,
-
-    backgroundColor: "#F8FAF9",
-
-    alignItems: "center",
-    justifyContent: "center",
   },
-
   detailLabel: {
-    fontSize: 7,
-    color: "#68746F",
-    marginBottom: 2,
+    color: '#899187',
+    fontSize: 11,
   },
-
   detailValue: {
-    fontSize: 9,
-    fontWeight: "600",
-    color: "#35403D",
+    marginTop: 3,
+    color: '#334238',
+    fontSize: 13,
+    fontWeight: '600',
   },
-
-  verifiedRow: {
-    flexDirection: "row",
-    alignItems: "center",
+  divider: {
+    height: 1,
+    backgroundColor: '#F0EEE8',
   },
-
-  verifiedText: {
-    fontSize: 9,
-    fontWeight: "600",
-    color: "#00875A",
-    marginLeft: 3,
+  historyCard: {
+    marginTop: 18,
+    padding: 17,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#EAE7DE',
   },
-
-  /* =========================
-     POST FOOD BUTTON
-  ========================= */
-
-  postFoodButton: {
-    position: "absolute",
-    right: 9,
-    bottom: 52,
-
-    height: 32,
-
-    paddingHorizontal: 13,
-
-    borderRadius: 17,
-
-    backgroundColor: "#007B5E",
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-
-    elevation: 5,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 5,
+  historyTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 9,
   },
-
-  postFoodText: {
-    color: "#FFFFFF",
-    fontSize: 9,
-    fontWeight: "700",
-    marginLeft: 5,
+  mutedMessage: {
+    paddingVertical: 12,
+    color: '#899187',
+    fontSize: 12,
+    lineHeight: 18,
   },
-
-  /* =========================
-     BOTTOM NAV
-  ========================= */
-
-  bottomNav: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-
-    height: 50,
-
-    backgroundColor: "#FFFFFF",
-
+  donationRow: {
+    minHeight: 62,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: "#E0E6E3",
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-
-    elevation: 10,
+    borderTopColor: '#F0EEE8',
+    gap: 11,
   },
-
-  navItem: {
-    width: 62,
-    height: 39,
-
-    borderRadius: 20,
-
-    alignItems: "center",
-    justifyContent: "center",
+  donationIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E2EDDF',
   },
-
-  activeNavItem: {
-    backgroundColor: "#00A978",
+  donationCopy: {
+    flex: 1,
   },
-
-  navText: {
-    fontSize: 7,
-    color: "#68736F",
-    marginTop: 2,
+  donationName: {
+    color: '#334238',
+    fontSize: 13,
+    fontWeight: '600',
   },
-
-  activeNavText: {
-    fontSize: 7,
-    color: "#FFFFFF",
-    fontWeight: "600",
-    marginTop: 2,
+  donationStatus: {
+    marginTop: 4,
+    color: '#8C6819',
+    fontSize: 11,
+    textTransform: 'capitalize',
   },
-
-  bottomSpacing: {
-    height: 30,
+  postButton: {
+    minHeight: 52,
+    marginTop: 19,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 9,
+    backgroundColor: '#26734D',
+  },
+  postButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 18,
+    backgroundColor: 'rgba(24, 37, 29, 0.48)',
+  },
+  modalCard: {
+    maxHeight: '94%',
+    padding: 21,
+    borderRadius: 23,
+    backgroundColor: '#FBFAF6',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  modalTitleGroup: {
+    flex: 1,
+  },
+  modalEyebrow: {
+    color: '#8C6819',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  modalTitle: {
+    marginTop: 5,
+    color: '#1C2C25',
+    fontSize: 21,
+    fontWeight: '700',
+  },
+  closeButton: {
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFEEE8',
+  },
+  modalDescription: {
+    marginTop: 10,
+    marginBottom: 19,
+    color: '#697469',
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  inputLabel: {
+    marginTop: 13,
+    marginBottom: 7,
+    color: '#667063',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+  },
+  fieldSelect: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 13,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E4DA',
+    backgroundColor: '#FFFFFF',
+  },
+  fieldSelectText: {
+    flex: 1,
+    color: '#334238',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  fieldOptions: {
+    marginTop: 5,
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#E2E4DA',
+    backgroundColor: '#FFFFFF',
+  },
+  fieldOption: {
+    minHeight: 43,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0EEE8',
+  },
+  selectedFieldOption: {
+    backgroundColor: '#F0F5EC',
+  },
+  fieldOptionText: {
+    color: '#697469',
+    fontSize: 13,
+  },
+  selectedFieldOptionText: {
+    color: '#26734D',
+    fontWeight: '700',
+  },
+  textInput: {
+    minHeight: 48,
+    paddingHorizontal: 13,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E4DA',
+    color: '#26372C',
+    fontSize: 14,
+    backgroundColor: '#FFFFFF',
+  },
+  validationError: {
+    marginTop: 6,
+    color: '#A33D32',
+    fontSize: 11,
+  },
+  cooldownNotice: {
+    marginTop: 15,
+    padding: 12,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    backgroundColor: '#F8F0D8',
+  },
+  cooldownText: {
+    flex: 1,
+    color: '#765817',
+    fontSize: 11,
+    lineHeight: 17,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 19,
+  },
+  cancelButton: {
+    minHeight: 48,
+    minWidth: 88,
+    paddingHorizontal: 14,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: '#DADDD3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  cancelButtonText: {
+    color: '#59665B',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  confirmButton: {
+    minHeight: 48,
+    flex: 1,
+    paddingHorizontal: 10,
+    borderRadius: 13,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    backgroundColor: '#26734D',
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  confirmButtonText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

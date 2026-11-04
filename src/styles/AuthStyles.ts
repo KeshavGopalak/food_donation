@@ -1,0 +1,220 @@
+import { StyleSheet } from 'react-native';
+
+export const AuthStyles = StyleSheet.create({
+  form: {
+    width: '100%',
+    maxWidth: 440,
+    alignSelf: 'center',
+    paddingHorizontal: 22,
+    paddingVertical: 28,
+    backgroundColor: '#FFFEFB',
+    borderRadius: 24,
+  },
+  formEyebrow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    marginBottom: 13,
+  },
+  formEyebrowDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#E8C968',
+  },
+  formEyebrowText: {
+    color: '#26734D',
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  title: {
+    color: '#1C2C25',
+    fontSize: 28,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+    marginBottom: 7,
+  },
+  subtitle: {
+    color: '#69766E',
+    fontSize: 14,
+    lineHeight: 21,
+    marginBottom: 25,
+  },
+  field: {
+    marginBottom: 0,
+  },
+  fieldGroup: {
+    gap: 16,
+  },
+  label: {
+    color: '#35443A',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E4E2D9',
+    borderRadius: 12,
+    backgroundColor: '#F7F5EF',
+    color: '#1C2C25',
+    fontSize: 14,
+    paddingHorizontal: 16,
+  },
+  inputWhite: {
+    backgroundColor: '#FFFFFF',
+  },
+  selector: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E4E2D9',
+    borderRadius: 12,
+    backgroundColor: '#F7F5EF',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  selectorText: {
+    color: '#1C2C25',
+    fontSize: 14,
+  },
+  selectorIcon: {
+    color: '#1C2C25',
+    fontSize: 17,
+  },
+  optionsOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+    backgroundColor: 'rgba(28, 44, 37, 0.48)',
+  },
+  optionsCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    padding: 8,
+  },
+  option: {
+    minHeight: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
+  optionText: {
+    color: '#1C2C25',
+    fontSize: 16,
+  },
+  passwordRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  passwordToggle: {
+    paddingLeft: 12,
+    paddingVertical: 10,
+  },
+  passwordToggleText: {
+    color: '#26734D',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  optionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: -3,
+    marginBottom: 22,
+  },
+  rememberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderColor: '#A8B1A2',
+    borderRadius: 5,
+    marginRight: 8,
+  },
+  checkboxActive: {
+    borderColor: '#26734D',
+    backgroundColor: '#26734D',
+  },
+  helperText: {
+    color: '#69766E',
+    fontSize: 13,
+  },
+  linkText: {
+    color: '#26734D',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  primaryButton: {
+    height: 48,
+    borderRadius: 14,
+    backgroundColor: '#E8C968',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.6,
+  },
+  primaryButtonText: {
+    color: '#173F32',
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 23,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E4E2D9',
+  },
+  dividerText: {
+    color: '#69766E',
+    fontSize: 12,
+    marginHorizontal: 13,
+  },
+  googleButton: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E4E2D9',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  googleButtonText: {
+    color: '#1C2C25',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 25,
+    gap: 5,
+  },
+  errorText: {
+    color: '#A83E32',
+    fontSize: 13,
+    lineHeight: 19,
+    marginBottom: 10,
+  },
+  successText: {
+    color: '#26734D',
+    fontSize: 13,
+    lineHeight: 19,
+    marginBottom: 10,
+  },
+});
